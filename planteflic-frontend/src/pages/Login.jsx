@@ -1,10 +1,13 @@
 //frontend/src/pages/Login.jsx
 
 import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 
 function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
@@ -18,29 +21,40 @@ function Login() {
       const res = await api.post('/auth/login', { email, password });
       login(res.data.token);
     } catch (err) {
-      setError(err.response.data.message || 'Erreur de connexion');
+      setError(err.response?.data?.message || t('login.error'));
     }
   };
 
   return (
-    <div>
-      <h2>Connexion</h2>
+    <div className="form-container">
+      <h2>{t('login.title')}</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleLogin}>
         <input
           type="email"
-          placeholder="Adresse email"
+          placeholder={t('login.email')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
-          placeholder="Mot de passe"
+          placeholder={t('login.password')}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
-        <button type="submit">Se connecter</button>
+        <button type="submit" style={{ backgroundColor: 'transparent', border: '2px solid white', color: 'white' }}>{t('login.submit')}</button>
       </form>
+      
+      <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <p>{t('login.noAccount')}</p>
+        <Link to="/register">
+          <button type="button" style={{ backgroundColor: 'transparent', border: '2px solid white', color: 'white' }}>
+            {t('login.register')}
+          </button>
+        </Link>
+      </div>
     </div>
   );
 }

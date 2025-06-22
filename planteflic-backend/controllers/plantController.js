@@ -10,6 +10,20 @@ exports.getPlants = async (req, res) => {
   res.json(plants);
 };
 
+exports.getPlant = async (req, res) => {
+  try {
+    // Recherche d'une plante par ID ET propriétaire (sécurité)
+    const plant = await Plant.findOne({ _id: req.params.id, owner: req.user });
+
+    if (!plant) {
+      return res.status(404).json({ message: 'Plante non trouvée' });
+    }
+    res.json(plant);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur serveur', error: error.message });
+  }
+};
+
 exports.createPlant = async (req, res) => {
 
     // Validation des champs requis

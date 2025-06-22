@@ -8,7 +8,7 @@ function PrivateRoute({ children }) {
   // Si pas connecté : redirection vers login
   if (!user) {
     return <Navigate to="/" />;
-  }w
+  }
 
   // Sinon : on affiche la page protégée
   return children;

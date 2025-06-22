@@ -1,0 +1,128 @@
+:root {
+  --bg-color: #e6f4ea;      /* light green */
+  --text-color: #1d1d1d;
+  --accent-color: #4caf50;  /* vert doux */
+  --input-bg: #ffffff;      /* fond des inputs en mode clair */
+  --input-text: #1d1d1d;    /* texte des inputs en mode clair */
+}
+
+[data-theme="dark"] {
+  --bg-color: #0e1d15;       /* dark green */
+  --text-color: #f1f1f1;
+  --accent-color: #81c784;   /* vert clair */
+  --input-bg: #2d2d2d;       /* fond sombre pour les inputs */
+  --input-text: #f1f1f1;     /* texte clair pour les inputs */
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+input, button {
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 4px;
+}
+
+/* Styles spécifiques pour les inputs */
+input {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid #ccc;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Style pour les inputs en mode sombre */
+[data-theme="dark"] input {
+  border: 1px solid #555;
+}
+
+/* Focus sur les inputs */
+input:focus {
+  outline: 2px solid var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+button {
+  background-color: var(--accent-color);
+  color: white;
+  cursor: pointer;
+}
+
+/* Theme pour la formulaire */
+.form-container {
+  max-width: 400px;
+  margin: 5vh auto;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+
+@media (max-width: 600px) {
+  .form-container {
+    margin: 2rem 1rem;
+    padding: 1.5rem;
+  }
+}
+
+/* Styles pour les cartes des plantes */
+.plant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.plant-card {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 1.2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease;
+}
+
+.plant-card:hover {
+  transform: scale(1.02);
+}
+
+/* Styles pour le dashboard  */
+h2, h3 {
+  margin: 0;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.btn-add {
+  background-color: white;
+  color: var(--accent-color);
+  font-weight: bold;
+  border: 2px solid var(--accent-color);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-add:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
