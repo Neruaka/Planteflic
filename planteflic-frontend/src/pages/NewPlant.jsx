@@ -11,8 +11,10 @@ function NewPlant() {
   const [formData, setFormData] = useState({
     name: '',
     species: '',
-    frequency: '',
-    lastWatered: ''
+    wateringFrequency: '7',
+    lastWatered: '',
+    location: '',
+    image: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ function NewPlant() {
     setError('');
     setLoading(true);
 
-    if (!formData.name || !formData.species || !formData.frequency || !formData.lastWatered) {
+    if (!formData.name || !formData.species || !formData.wateringFrequency || !formData.lastWatered) {
       const errorMessage = t('newPlant.validation');
       setError(errorMessage);
       toast.error(errorMessage);
@@ -85,12 +87,20 @@ function NewPlant() {
           onChange={handleChange}
           required
         />
+
+        <input
+          type="text"
+          name="location"
+          placeholder="Emplacement (ex: Salon, Balcon)"
+          value={formData.location}
+          onChange={handleChange}
+        />
         
         <input
           type="number"
-          name="frequency"
+          name="wateringFrequency"
           placeholder={t('newPlant.frequency')}
-          value={formData.frequency}
+          value={formData.wateringFrequency}
           onChange={handleChange}
           min="1"
           required
@@ -105,6 +115,17 @@ function NewPlant() {
         />
         <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', marginTop: '-0.5rem' }}>
           {t('newPlant.lastWatered')}
+        </label>
+
+        <input
+          type="url"
+          name="image"
+          placeholder={t('newPlant.image')}
+          value={formData.image}
+          onChange={handleChange}
+        />
+        <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', marginTop: '-0.5rem' }}>
+          URL de l'image (optionnel)
         </label>
         
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>

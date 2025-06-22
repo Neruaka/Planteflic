@@ -13,8 +13,10 @@ function EditPlant() {
   const [formData, setFormData] = useState({
     name: '',
     species: '',
-    frequency: '',
-    lastWatered: ''
+    wateringFrequency: '',
+    lastWatered: '',
+    location: '',
+    image: ''
   });
   
   const [error, setError] = useState('');
@@ -32,8 +34,9 @@ function EditPlant() {
         setFormData({
           name: plant.name,
           species: plant.species || '',
-          frequency: plant.frequency,
-          lastWatered: new Date(plant.lastWatered).toISOString().split('T')[0]
+          wateringFrequency: plant.wateringFrequency,
+          lastWatered: new Date(plant.lastWatered).toISOString().split('T')[0],
+          image: plant.image || ''
         });
       } catch (err) {
         console.error(err);
@@ -47,7 +50,7 @@ function EditPlant() {
     };
 
     fetchPlant();
-  }, [id, t, showLoading, hideLoading, toast]);
+  }, [id]);
 
   const handleChange = (e) => {
     setFormData({
@@ -61,7 +64,7 @@ function EditPlant() {
     setError('');
     setLoading(true);
 
-    if (!formData.name || !formData.species || !formData.frequency || !formData.lastWatered) {
+    if (!formData.name || !formData.species || !formData.wateringFrequency || !formData.lastWatered) {
       const errorMessage = t('editPlant.validation');
       setError(errorMessage);
       toast.error(errorMessage);
@@ -149,9 +152,9 @@ function EditPlant() {
         
         <input
           type="number"
-          name="frequency"
+          name="wateringFrequency"
           placeholder={t('editPlant.frequency')}
-          value={formData.frequency}
+          value={formData.wateringFrequency}
           onChange={handleChange}
           min="1"
           required
@@ -166,6 +169,17 @@ function EditPlant() {
         />
         <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', marginTop: '-0.5rem' }}>
           {t('editPlant.lastWatered')}
+        </label>
+
+        <input
+          type="url"
+          name="image"
+          placeholder={t('editPlant.image')}
+          value={formData.image}
+          onChange={handleChange}
+        />
+        <label style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)', marginTop: '-0.5rem' }}>
+          URL de l'image (optionnel)
         </label>
         
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
