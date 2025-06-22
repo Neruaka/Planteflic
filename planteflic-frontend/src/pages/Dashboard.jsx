@@ -33,7 +33,7 @@ function Dashboard() {
     };
 
     fetchPlants();
-  }, []); // Dépendances vides - ne s'exécute qu'une fois
+  }, []);
 
   const handleAdd = () => {
     navigate('/plants/new');
@@ -46,7 +46,6 @@ function Dashboard() {
   const handleWater = async (plantId) => {
     try {
       const response = await api.post(`/plants/${plantId}/water`);
-      // Mettre à jour la plante dans la liste
       setPlants(plants.map(plant => 
         plant._id === plantId ? response.data : plant
       ));
@@ -57,21 +56,47 @@ function Dashboard() {
     }
   };
 
+  const plantsNeedingWater = plants.filter(plant => plant.needsWatering);
+
   return (
-    <div style={{ padding: '2rem' }}>
+    <div className="container" style={{ padding: '1rem' }}>
       <div className="dashboard-header">
-        <h2>{t('dashboard.title')}</h2>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn-add" onClick={handleAdd}>{t('dashboard.add')}</button>
+        <div>
+          <h2>{t('dashboard.title')}</h2>
+          {/* Statistiques rapides */}
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                {plants.length}
+              </div>
+              <div>Plantes totales</div>
+            </div>
+            <div className={`stat-card ${plantsNeedingWater.length > 0 ? 'needs-attention' : ''}`}>
+              <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                {plantsNeedingWater.length}
+              </div>
+              <div>À arroser</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button className="btn-add" onClick={handleAdd}>
+            {t('dashboard.add')}
+          </button>
         </div>
       </div>
 
-      {loading && <p>{t('dashboard.loading')}</p>}
+      {loading && <p className="text-center">{t('dashboard.loading')}</p>}
       
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       
       {!loading && !error && plants.length === 0 && (
-        <p>{t('dashboard.empty')}</p>
+        <div className="text-center" style={{ padding: '2rem' }}>
+          <p>{t('dashboard.empty')}</p>
+          <button className="btn-primary" onClick={handleAdd}>
+            Ajouter ma première plante
+          </button>
+        </div>
       )}
 
       <div className="plant-grid">
@@ -79,30 +104,24 @@ function Dashboard() {
           <div key={plant._id} className="plant-card" style={{ position: 'relative' }}>
             {/* Badge rouge si arrosage nécessaire */}
             {plant.needsWatering && (
-              <div style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                backgroundColor: '#ff6b6b',
-                color: 'white',
-                borderRadius: '50%',
-                width: '20px',
-                height: '20px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '12px',
-                fontWeight: 'bold'
-              }}>
+              <div className="watering-badge">
                 !
               </div>
             )}
             
-            <h3>{plant.name}</h3>
+            <h3 style={{ marginBottom: '0.5rem', wordBreak: 'break-word' }}>
+              {plant.name}
+            </h3>
             <p>🌺 {t('plant.species')} : {plant.species || t('plant.notSpecified')}</p>
             <p>💧 {t('plant.watering', { frequency: plant.wateringFrequency })}</p>
             <p>📅 {t('plant.lastWatered')} : {new Date(plant.lastWatered).toLocaleDateString()}</p>
-            <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
+            
+            <div style={{ 
+              marginTop: '1rem', 
+              display: 'flex', 
+              gap: '0.5rem',
+              flexWrap: 'wrap'
+            }}>
               <button 
                 onClick={() => handleWater(plant._id)}
                 style={{
@@ -112,7 +131,9 @@ function Dashboard() {
                   padding: '0.4rem 0.8rem',
                   borderRadius: '4px',
                   fontSize: '0.9rem',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  flex: '1',
+                  minWidth: '100px'
                 }}
               >
                 💧 Arroser
@@ -126,7 +147,9 @@ function Dashboard() {
                   padding: '0.4rem 0.8rem',
                   borderRadius: '4px',
                   fontSize: '0.9rem',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  flex: '1',
+                  minWidth: '100px'
                 }}
               >
                 {t('dashboard.edit')}

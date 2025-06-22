@@ -287,3 +287,188 @@ h2, h3 {
   background-color: var(--accent-color);
   color: white;
 }
+
+/* Styles pour les alertes d'arrosage */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.plant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.watering-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  fontWeight: bold;
+  animation: pulse 2s infinite;
+}
+
+.needs-watering {
+  border: 3px solid #ff6b6b !important;
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.5) !important;
+}
+
+.watering-overdue {
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.watering-ok {
+  color: #388e3c;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .plant-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .plant-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .plant-card {
+    padding: 1rem !important;
+  }
+
+  .plant-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .plant-card p {
+    font-size: 0.9rem;
+  }
+
+  .plant-card div[style*="display: flex"] {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .plant-card button {
+    width: 100%;
+    padding: 0.6rem !important;
+  }
+
+  /* Forms responsive */
+  .form-container {
+    padding: 1rem !important;
+    margin: 0 1rem;
+  }
+
+  .form-container h2 {
+    font-size: 1.3rem;
+  }
+
+  .form-container input {
+    font-size: 16px; /* Évite le zoom sur iOS */
+  }
+
+  .form-container div[style*="display: flex"] {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .form-container button {
+    width: 100%;
+    padding: 0.8rem;
+  }
+
+  /* Navbar responsive */
+  .navbar {
+    padding: 1rem !important;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .navbar-nav button,
+  .navbar-nav a {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .dashboard-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .plant-card {
+    padding: 0.8rem !important;
+  }
+
+  .btn-add {
+    padding: 0.6rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Badge responsive */
+  .plant-card div[style*="position: absolute"] {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 10px !important;
+  }
+}
+
+/* Grille responsive pour les plantes */
+.plant-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .plant-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.2rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .plant-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+}

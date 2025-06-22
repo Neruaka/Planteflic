@@ -72,6 +72,7 @@ i18n
             species: "Espèce (ex: Monstera deliciosa) *",
             frequency: "Fréquence d'arrosage (jours) *",
             lastWatered: "Date du dernier arrosage *",
+            image: "URL de l'image (optionnel)",
             submit: "✅ Ajouter la plante",
             cancel: "❌ Annuler",
             loading: "🌱 Ajout...",
@@ -86,6 +87,7 @@ i18n
             species: "Espèce (ex: Monstera deliciosa) *",
             frequency: "Fréquence d'arrosage (jours) *",
             lastWatered: "Date du dernier arrosage *",
+            image: "URL de l'image (optionnel)",
             submit: "✅ Modifier",
             delete: "🗑️ Supprimer",
             cancel: "❌ Annuler",
@@ -110,7 +112,8 @@ i18n
             loading: "⏳ Chargement en cours...",
             savingPlant: "💾 Sauvegarde de la plante...",
             deletingPlant: "🗑️ Suppression en cours...",
-            loadingPlants: "🌿 Chargement des plantes..."
+            loadingPlants: "🌿 Chargement des plantes...",
+            wateringPlant: "💧 Arrosage en cours..."
           },
           
           loader: {

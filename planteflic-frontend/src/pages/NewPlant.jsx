@@ -13,7 +13,6 @@ function NewPlant() {
     species: '',
     wateringFrequency: '7',
     lastWatered: '',
-    location: '',
     image: ''
   });
   const [error, setError] = useState('');
@@ -88,14 +87,6 @@ function NewPlant() {
           required
         />
 
-        <input
-          type="text"
-          name="location"
-          placeholder="Emplacement (ex: Salon, Balcon)"
-          value={formData.location}
-          onChange={handleChange}
-        />
-        
         <input
           type="number"
           name="wateringFrequency"

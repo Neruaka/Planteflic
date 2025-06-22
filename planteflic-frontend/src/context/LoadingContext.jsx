@@ -4,6 +4,9 @@ import { createContext, useContext, useState } from 'react';
 
 const LoadingContext = createContext();
 
+// Exporter comme export nommé
+export { LoadingContext };
+
 export const useLoading = () => {
   const context = useContext(LoadingContext);
   if (!context) {
