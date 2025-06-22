@@ -1,51 +1,34 @@
-//frontend/src/i18n/i18n.js
+//planteflic-frontend/src/i18n/i18n.js
 
-// Import des modules i18next
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-// Configuration i18n
 i18n
-  // Détection automatique de la langue du navigateur
   .use(LanguageDetector)
-  // Intégration avec React
   .use(initReactI18next)
-  // Initialisation avec les options
   .init({
-    // Langue par défaut si aucune détection
     fallbackLng: 'fr',
-    
-    // Langues supportées
     supportedLngs: ['fr', 'en'],
     
-    // Configuration du détecteur de langue
     detection: {
-      // Ordre de détection : localStorage > navigateur > langue par défaut
       order: ['localStorage', 'navigator'],
-      // Clé de stockage dans localStorage
       lookupLocalStorage: 'i18nextLng',
-      // Cache la langue détectée
       caches: ['localStorage']
     },
 
-    // Désactiver les namespaces (optionnel pour simplifier)
     ns: false,
     defaultNS: false,
 
-    // Ressources de traduction
     resources: {
-      // Traductions françaises
       fr: {
         translation: {
-          // Navigation et interface générale
           nav: {
             dashboard: "Tableau de bord",
             logout: "Déconnexion",
             theme: "Changer de thème"
           },
           
-          // Page de connexion
           login: {
             title: "Connexion",
             email: "Adresse email",
@@ -56,7 +39,6 @@ i18n
             error: "Erreur de connexion"
           },
           
-          // Page d'inscription
           register: {
             title: "Inscription",
             email: "Adresse email",
@@ -68,7 +50,6 @@ i18n
             success: "Inscription réussie ! Vous pouvez maintenant vous connecter."
           },
           
-          // Dashboard
           dashboard: {
             title: "🌿 Mes plantes",
             add: "➕ Ajouter",
@@ -78,7 +59,6 @@ i18n
             edit: "✏️ Modifier"
           },
           
-          // Informations des plantes
           plant: {
             species: "Espèce",
             watering: "Arrosage : tous les {{frequency}} jours",
@@ -86,7 +66,6 @@ i18n
             notSpecified: "Non renseignée"
           },
           
-          // Formulaire nouvelle plante
           newPlant: {
             title: "🌱 Ajouter une nouvelle plante",
             name: "Nom de la plante *",
@@ -101,7 +80,6 @@ i18n
             validation: "Tous les champs sont obligatoires"
           },
           
-          // Formulaire édition plante
           editPlant: {
             title: "🌿 Modifier la plante",
             name: "Nom de la plante *",
@@ -121,7 +99,27 @@ i18n
             validation: "Tous les champs sont obligatoires"
           },
           
-          // Messages généraux
+          toast: {
+            plantAdded: "🌱 Plante ajoutée avec succès !",
+            plantUpdated: "✅ Plante modifiée avec succès !",
+            plantDeleted: "🗑️ Plante supprimée avec succès !",
+            loginSuccess: "🎉 Connexion réussie !",
+            registerSuccess: "🎊 Inscription réussie !",
+            logoutSuccess: "👋 Déconnexion réussie !",
+            error: "❌ Une erreur est survenue",
+            loading: "⏳ Chargement en cours...",
+            savingPlant: "💾 Sauvegarde de la plante...",
+            deletingPlant: "🗑️ Suppression en cours...",
+            loadingPlants: "🌿 Chargement des plantes..."
+          },
+          
+          loader: {
+            authenticating: "🔐 Authentification...",
+            savingData: "💾 Sauvegarde...",
+            deletingData: "🗑️ Suppression...",
+            loadingData: "📥 Chargement..."
+          },
+          
           common: {
             welcome: "Bienvenue sur Planteflic !",
             error: "Une erreur est survenue",
@@ -136,17 +134,14 @@ i18n
         }
       },
       
-      // Traductions anglaises
       en: {
         translation: {
-          // Navigation and general interface
           nav: {
             dashboard: "Dashboard",
             logout: "Logout",
             theme: "Switch theme"
           },
           
-          // Login page
           login: {
             title: "Login",
             email: "Email address",
@@ -157,7 +152,6 @@ i18n
             error: "Connection error"
           },
           
-          // Register page
           register: {
             title: "Register",
             email: "Email address",
@@ -169,7 +163,6 @@ i18n
             success: "Registration successful! You can now sign in."
           },
           
-          // Dashboard
           dashboard: {
             title: "🌿 My plants",
             add: "➕ Add",
@@ -179,7 +172,6 @@ i18n
             edit: "✏️ Edit"
           },
           
-          // Plant information
           plant: {
             species: "Species",
             watering: "Watering: every {{frequency}} days",
@@ -187,7 +179,6 @@ i18n
             notSpecified: "Not specified"
           },
           
-          // New plant form
           newPlant: {
             title: "🌱 Add a new plant",
             name: "Plant name *",
@@ -202,7 +193,6 @@ i18n
             validation: "All fields are required"
           },
           
-          // Edit plant form
           editPlant: {
             title: "🌿 Edit plant",
             name: "Plant name *",
@@ -222,7 +212,27 @@ i18n
             validation: "All fields are required"
           },
           
-          // General messages
+          toast: {
+            plantAdded: "🌱 Plant added successfully!",
+            plantUpdated: "✅ Plant updated successfully!",
+            plantDeleted: "🗑️ Plant deleted successfully!",
+            loginSuccess: "🎉 Login successful!",
+            registerSuccess: "🎊 Registration successful!",
+            logoutSuccess: "👋 Logout successful!",
+            error: "❌ An error occurred",
+            loading: "⏳ Loading...",
+            savingPlant: "💾 Saving plant...",
+            deletingPlant: "🗑️ Deleting...",
+            loadingPlants: "🌿 Loading plants..."
+          },
+          
+          loader: {
+            authenticating: "🔐 Authenticating...",
+            savingData: "💾 Saving...",
+            deletingData: "🗑️ Deleting...",
+            loadingData: "📥 Loading..."
+          },
+          
           common: {
             welcome: "Welcome to Planteflic!",
             error: "An error occurred",

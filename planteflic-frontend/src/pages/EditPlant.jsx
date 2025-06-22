@@ -1,25 +1,15 @@
-//planteflic-frontend/src/pages/EditPlant.jsx
-
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
+import { useToast } from '../hooks/useToast';
+import { useLoading } from '../context/LoadingContext';
 
-/**
- * Composant pour modifier ou supprimer une plante existante
- * Permet de :
- * - Charger les données d'une plante spécifique
- * - Modifier ses informations (nom, espèce, fréquence, dernier arrosage)
- * - Supprimer la plante avec confirmation
- * - Naviguer vers le dashboard après les opérations
- */
 function EditPlant() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  // Récupération de l'ID de la plante depuis l'URL
   const { id } = useParams();
   
-  // État local pour stocker les données du formulaire
   const [formData, setFormData] = useState({
     name: '',
     species: '',
@@ -27,14 +17,16 @@ function EditPlant() {
     lastWatered: ''
   });
   
-  // États pour la gestion des erreurs et du chargement
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingPlant, setLoadingPlant] = useState(true);
+  const toast = useToast();
+  const { showLoading, hideLoading } = useLoading();
 
   useEffect(() => {
     const fetchPlant = async () => {
       try {
+        showLoading(t('loader.loadingData'));
         const res = await api.get(`/plants/${id}`);
         const plant = res.data;
         setFormData({
@@ -45,14 +37,17 @@ function EditPlant() {
         });
       } catch (err) {
         console.error(err);
-        setError(t('editPlant.loadError'));
+        const errorMessage = t('editPlant.loadError');
+        setError(errorMessage);
+        toast.error(errorMessage);
       } finally {
         setLoadingPlant(false);
+        hideLoading();
       }
     };
 
     fetchPlant();
-  }, [id, t]); 
+  }, [id, t, showLoading, hideLoading, toast]);
 
   const handleChange = (e) => {
     setFormData({
@@ -67,35 +62,50 @@ function EditPlant() {
     setLoading(true);
 
     if (!formData.name || !formData.species || !formData.frequency || !formData.lastWatered) {
-      setError(t('editPlant.validation'));
+      const errorMessage = t('editPlant.validation');
+      setError(errorMessage);
+      toast.error(errorMessage);
       setLoading(false);
       return;
     }
 
+    showLoading(t('loader.savingData'));
+
     try {
       await api.put(`/plants/${id}`, formData);
+      hideLoading();
+      toast.messages.plantUpdated();
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || t('editPlant.error'));
+      hideLoading();
+      const errorMessage = err.response?.data?.message || t('editPlant.error');
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
   };
-
 
   const handleDelete = async () => {
     if (!window.confirm(t('editPlant.deleteConfirm'))) {
       return;
     }
 
+    setLoading(true);
+    showLoading(t('toast.deletingPlant'));
+
     try {
-      setLoading(true);
       await api.delete(`/plants/${id}`);
+      hideLoading();
+      toast.messages.plantDeleted();
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || t('editPlant.deleteError'));
+      hideLoading();
+      const errorMessage = err.response?.data?.message || t('editPlant.deleteError');
+      setError(errorMessage);
+      toast.error(errorMessage);
       setLoading(false);
     }
   };
@@ -116,11 +126,9 @@ function EditPlant() {
     <div className="form-container">
       <h2>{t('editPlant.title')}</h2>
       
-      {/* Affichage conditionnel des erreurs */}
       {error && <p style={{ color: 'red', marginBottom: '1rem' }}>{error}</p>}
       
       <form onSubmit={handleSubmit}>
-        {/* Champ nom de la plante */}
         <input
           type="text"
           name="name"
@@ -130,7 +138,6 @@ function EditPlant() {
           required
         />
         
-        {/* Champ espèce de la plante */}
         <input
           type="text"
           name="species"
@@ -140,7 +147,6 @@ function EditPlant() {
           required
         />
         
-        {/* Champ fréquence d'arrosage */}
         <input
           type="number"
           name="frequency"
@@ -151,7 +157,6 @@ function EditPlant() {
           required
         />
         
-        {/* Champ date du dernier arrosage */}
         <input
           type="date"
           name="lastWatered"
@@ -163,9 +168,7 @@ function EditPlant() {
           {t('editPlant.lastWatered')}
         </label>
         
-        {/* Groupe de boutons d'action */}
         <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-          {/* Bouton de modification */}
           <button 
             type="submit" 
             disabled={loading}
@@ -179,7 +182,6 @@ function EditPlant() {
             {loading ? t('editPlant.loadingEdit') : t('editPlant.submit')}
           </button>
           
-          {/* Bouton de suppression */}
           <button 
             type="button" 
             onClick={handleDelete}
@@ -193,7 +195,6 @@ function EditPlant() {
             {loading ? t('editPlant.loadingDelete') : t('editPlant.delete')}
           </button>
           
-          {/* Bouton d'annulation */}
           <button 
             type="button" 
             onClick={handleCancel}

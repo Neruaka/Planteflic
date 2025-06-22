@@ -1,37 +1,39 @@
-//planteflic-frontend/src/pages/dashboard.jsx
-
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useToast } from '../hooks/useToast';
+import { useLoading } from '../context/LoadingContext';
 
 function Dashboard() {
   const navigate = useNavigate();
-  // Utilisation du hook useTranslation pour la traduction
   const { t } = useTranslation();
-
-  // États pour les plantes, chargement et erreur (DÉPLACÉS À L'INTÉRIEUR)
   const [plants, setPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const toast = useToast();
+  const { showLoading, hideLoading } = useLoading();
 
-  // Hook pour charger les plantes depuis l'API (DÉPLACÉ À L'INTÉRIEUR)
   useEffect(() => {
     const fetchPlants = async () => {
       try {
+        showLoading(t('toast.loadingPlants'));
         const res = await api.get('/plants'); 
         setPlants(res.data);
+        setError('');
       } catch (err) {
         console.error(err);
-        // setError("Impossible de charger les plantes ");
-        setError(t('dashboard.error')); // Utilisation de la traduction
+        const errorMessage = t('dashboard.error');
+        setError(errorMessage);
+        toast.error(errorMessage);
       } finally {
         setLoading(false);
+        hideLoading();
       }
     };
 
     fetchPlants();
-  }, [t]);
+  }, []); // Dépendances vides - ne s'exécute qu'une fois
 
   const handleAdd = () => {
     navigate('/plants/new');
@@ -50,7 +52,6 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Affichage conditionnel selon l'état */}
       {loading && <p>{t('dashboard.loading')}</p>}
       
       {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -59,7 +60,6 @@ function Dashboard() {
         <p>{t('dashboard.empty')}</p>
       )}
 
-      {/* Grille des plantes */}
       <div className="plant-grid">
         {plants.map((plant) => (
           <div key={plant._id} className="plant-card">
@@ -82,7 +82,7 @@ function Dashboard() {
               >
                 {t('dashboard.edit')}
               </button>
-              </div>
+            </div>
           </div>
         ))}
       </div>

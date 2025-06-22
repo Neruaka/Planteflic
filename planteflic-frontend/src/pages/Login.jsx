@@ -1,10 +1,10 @@
-//frontend/src/pages/Login.jsx
-
 import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import { useToast } from '../hooks/useToast';
+import { useLoading } from '../context/LoadingContext';
 
 function Login() {
   const { t } = useTranslation();
@@ -12,16 +12,25 @@ function Login() {
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
   const [error, setError] = useState('');
+  const toast = useToast();
+  const { showLoading, hideLoading } = useLoading();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    
+    showLoading(t('loader.authenticating'));
 
     try {
       const res = await api.post('/auth/login', { email, password });
+      hideLoading();
+      toast.messages.loginSuccess();
       login(res.data.token);
     } catch (err) {
-      setError(err.response?.data?.message || t('login.error'));
+      hideLoading();
+      const errorMessage = err.response?.data?.message || t('login.error');
+      setError(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -44,7 +53,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit" style={{ backgroundColor: 'transparent', border: '2px solid white', color: 'white' }}>{t('login.submit')}</button>
+        <button type="submit" style={{ backgroundColor: 'transparent', border: '2px solid white', color: 'white' }}>
+          {t('login.submit')}
+        </button>
       </form>
       
       <div style={{ textAlign: 'center', marginTop: '1rem' }}>

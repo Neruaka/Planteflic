@@ -1,9 +1,9 @@
-//frontend/src/pages/NewPlant.jsx
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
+import { useToast } from '../hooks/useToast';
+import { useLoading } from '../context/LoadingContext';
 
 function NewPlant() {
   const { t } = useTranslation();
@@ -16,6 +16,8 @@ function NewPlant() {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
+  const { showLoading, hideLoading } = useLoading();
 
   const handleChange = (e) => {
     setFormData({
@@ -29,19 +31,27 @@ function NewPlant() {
     setError('');
     setLoading(true);
 
-    // Validation basique
     if (!formData.name || !formData.species || !formData.frequency || !formData.lastWatered) {
-      setError(t('newPlant.validation'));
+      const errorMessage = t('newPlant.validation');
+      setError(errorMessage);
+      toast.error(errorMessage);
       setLoading(false);
       return;
     }
 
+    showLoading(t('toast.savingPlant'));
+
     try {
       await api.post('/plants', formData);
+      hideLoading();
+      toast.messages.plantAdded();
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || t('newPlant.error'));
+      hideLoading();
+      const errorMessage = err.response?.data?.message || t('newPlant.error');
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
