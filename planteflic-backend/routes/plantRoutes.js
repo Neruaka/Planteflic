@@ -9,7 +9,8 @@ const {
   getPlant,
   createPlant,
   updatePlant,
-  deletePlant
+  deletePlant,
+  waterPlant
 } = require('../controllers/plantController');
 
 
@@ -18,5 +19,6 @@ router.get('/:id', getPlant);            // Lire une plante spécifique
 router.post('/', createPlant);           // Créer une plante
 router.put('/:id', updatePlant);         // Modifier une plante
 router.delete('/:id', deletePlant);      // Supprimer une plante
+router.post('/:id/water', waterPlant);   // Marquer une plante comme arrosée
 
 module.exports = router;
